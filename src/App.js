@@ -82,7 +82,9 @@ class App extends Component {
           sequencer={this.state.sequencer}
           onRowChange={(row, col, active) => this.handleRowChange(row, col, active)}
         />
-        <button className='playToggle' onClick={() => this.togglePlaying() }>{playText}</button>
+        <div className="SynthControls">
+          <button className='playToggle' onClick={() => this.togglePlaying() }>{playText}</button>
+        </div>
       </div>
     );
   }

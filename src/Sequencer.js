@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
+import './Sequencer.css'
 
 function SequencerRow(props) {
   const sequencerColumns = props.columns.map((col, idx) => {
+    const cls = `SequencerColumn${col.active ? ' SequencerColumn--active' : ''}`
     return (
-      <div className="SequencerColumn" key={col.id}>
+      <label className={cls} key={col.id}>
         <input
           type="checkbox"
           checked={col.active}
           onChange={(e) => props.onChange(idx, e.target.checked)}
         />
-      </div>
+      </label>
     )
   })
 

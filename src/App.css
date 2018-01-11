@@ -1,12 +1,23 @@
 .App {
+  display: grid;
+  height: 100vh; width: 100vw;
+  grid-template-rows: auto 5rem;
 }
 
-.SequencerGrid {
+.SynthControls {
+  justify-content: flex-end;
+  align-items: center;
+  background-color: hsl(0, 0%, 20%);
   display: flex;
-  justify-content: space-around;
-  width: 100vw;
+  padding: 0 .5rem;
 }
 
-.SequencerRow--active {
-  background-color: hsl(45, 65%, 85%)
+.playToggle {
+  background-color: hsl(0, 0%, 60%);
+  border: 3px solid hsl(0, 0%, 40%);
+  border-radius: .5rem;
+  color: #fff;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  height: 4rem;
 }

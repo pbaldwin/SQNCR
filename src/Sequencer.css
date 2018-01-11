@@ -1,0 +1,43 @@
+.SequencerGrid {
+  background-color: hsl(300, 55%, 45%);
+  border-left: 1px solid hsl(300, 85%, 30%);
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.SequencerRow {
+  border-right: 1px solid hsl(300, 85%, 30%);
+  border-top: 1px solid hsl(300, 85%, 30%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: stretch;
+  flex-grow: 1;
+
+  transition: background-color .25s ease-in;
+}
+
+.SequencerRow--active {
+  background-color: hsl(300, 85%, 55%);
+  transition: background-color .25s ease-out;
+}
+
+.SequencerColumn {
+  flex-grow: 1;
+  border-bottom: 1px solid hsl(300, 85%, 30%);
+
+  transition: background-color .25s ease-out;
+}
+
+.SequencerColumn input[type="checkbox"] {
+  display: none;
+}
+
+.SequencerColumn--active {
+  background-color: hsl(300, 85%, 65%)
+}
+
+.SequencerRow--active .SequencerColumn--active {
+  background-color: hsl(300, 85%, 80%)
+}
