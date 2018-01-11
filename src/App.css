@@ -1,0 +1,12 @@
+.App {
+}
+
+.SequencerGrid {
+  display: flex;
+  justify-content: space-around;
+  width: 100vw;
+}
+
+.SequencerRow--active {
+  background-color: hsl(45, 65%, 85%)
+}
