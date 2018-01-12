@@ -17,8 +17,8 @@
 }
 
 .SequencerRow--active {
-  background-color: hsl(300, 85%, 55%);
-  box-shadow: 0 0 .5rem .5rem hsl(300, 85%, 65%);
+  background-color: hsl(170, 65%, 55%);
+  box-shadow: 0 0 .5rem .5rem hsl(170, 65%, 65%);
 }
 
 .SequencerColumn {
@@ -39,6 +39,6 @@
 }
 
 .SequencerRow--active .SequencerColumn--active {
-  background-color: hsl(300, 85%, 80%);
-  box-shadow: 0 0 .5rem .5rem hsl(300, 85%, 85%);
+  background-color: hsl(170, 65%, 80%);
+  box-shadow: 0 0 .5rem .5rem hsl(170, 65%, 85%);
 }

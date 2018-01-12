@@ -112,7 +112,7 @@ class App extends Component {
     const storedSequences = this.state.storedSequences.slice(0, this.state.storedSequences.length - 1)
     storedSequences.unshift({
       name: 'Stored Sequence',
-      sequence: this.state.sequencer
+      sequence: this.state.sequencer.slice()
     })
     this.setState({
       storedSequences
@@ -123,7 +123,7 @@ class App extends Component {
   loadSequence(idx) {
     console.log(idx)
     this.setState({
-      sequencer: this.state.storedSequences[idx].sequence
+      sequencer: this.state.storedSequences[idx].sequence.slice()
     })
   }
 
