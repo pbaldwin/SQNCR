@@ -1,3 +1,4 @@
+import deepCopy from 'deep-copy'
 import emptySequence from './utils/emptySequence'
 import localforage from 'localforage'
 import React, { Component } from 'react';
@@ -76,7 +77,7 @@ class App extends Component {
   }
 
   handleRowChange(row, column, active) {
-    const sequencer = this.state.sequencer.slice()
+    const sequencer = deepCopy(this.state.sequencer)
     sequencer[row].columns[column].active = active
     this.setState({ sequencer })
     localforage.setItem('lastSequence', sequencer)
@@ -95,7 +96,7 @@ class App extends Component {
   }
 
   saveSequence(idx) {
-    const storedSequences = this.state.storedSequences.slice()
+    const storedSequences = deepCopy(this.state.storedSequences)
     storedSequences[idx] = {
       name: 'Stored Sequence',
       sequence: this.state.sequencer.slice()
@@ -108,7 +109,7 @@ class App extends Component {
 
   loadSequence(idx) {
     this.setState({
-      sequencer: this.state.storedSequences[idx].sequence.slice()
+      sequencer: deepCopy(this.state.storedSequences[idx].sequence)
     })
   }
 
