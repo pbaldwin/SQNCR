@@ -11,7 +11,7 @@ class Synth {
     this.outputBuss.gain.value = 1
 
     this.filter.type = 'highpass'
-    this.filter.frequency.value = 200
+    this.filter.frequency.value = 300
 
     this.masterVolume.gain.value = .5
 
@@ -44,12 +44,13 @@ class Synth {
   }
 
   trigger(node, value) {
+    clearInterval(node.release)
     node.gainNode.gain.value = value
     node.release = setInterval(() => {
-      node.gainNode.gain.value -= .02;
+      node.gainNode.gain.value -= .02
       if (node.gainNode.gain.value <= 0) {
-        node.gainNode.gain.value = 0;
-        clearInterval(node.release);
+        node.gainNode.gain.value = 0
+        clearInterval(node.release)
       }
     }, 15)
   }

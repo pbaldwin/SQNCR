@@ -14,20 +14,16 @@
   justify-content: space-around;
   align-items: stretch;
   flex-grow: 1;
-
-  transition: background-color .25s ease-in;
 }
 
 .SequencerRow--active {
   background-color: hsl(300, 85%, 55%);
-  transition: background-color .25s ease-out;
+  box-shadow: 0 0 .5rem .5rem hsl(300, 85%, 65%);
 }
 
 .SequencerColumn {
   flex-grow: 1;
   border-bottom: 1px solid hsl(300, 85%, 30%);
-
-  transition: background-color .25s ease-out;
 }
 
 .SequencerColumn input[type="checkbox"] {
@@ -35,9 +31,14 @@
 }
 
 .SequencerColumn--active {
-  background-color: hsl(300, 85%, 65%)
+  background-color: hsl(300, 85%, 65%);
+
+  transition:
+    background-color .25s ease,
+    box-shadow .25s ease;
 }
 
 .SequencerRow--active .SequencerColumn--active {
-  background-color: hsl(300, 85%, 80%)
+  background-color: hsl(300, 85%, 80%);
+  box-shadow: 0 0 .5rem .5rem hsl(300, 85%, 85%);
 }

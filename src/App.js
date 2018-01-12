@@ -1,3 +1,4 @@
+import localforage from 'localforage'
 import React, { Component } from 'react';
 import SequencerGrid from './Sequencer'
 import Synth from './Synth'
@@ -13,29 +14,63 @@ class App extends Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      tempo: 120,
+      playing: false,
+      activeRow: 0,
+      sequencer: this.createEmptySequence(),
+      storedSequences: Array(8).fill().map(() => {
+        return {
+          name: '------------',
+          sequence: this.createEmptySequence(),
+        }
+      })
+    }
+  }
+
+  componentDidMount() {
+    localforage
+      .getItem('lastSequence')
+      .then((sequence) => {
+        if (sequence) {
+          this.setState({
+            sequencer: sequence
+          })
+        }
+      })
+      .catch(console.log.bind(console))
+
+    localforage
+      .getItem('storedSequences')
+      .then((storedSequences) => {
+        if (storedSequences) {
+          this.setState({
+            storedSequences
+          })
+        }
+      })
+      .catch(console.log.bind(console))
+  }
+
+  createEmptySequence() {
     const note = {
       active: false,
       id: null,
     }
 
-    this.state = {
-      tempo: 120,
-      playing: false,
-      activeRow: 0,
-      sequencer: Array(16)
-                  .fill()
-                  .map((_, idx) => {
-                    return {
-                      active: false,
-                      id: `row-${idx}`,
-                      columns: Array(8)
-                                .fill()
-                                .map((_, jdx) => {
-                                  return Object.assign({}, note, { id: `${idx}-${jdx}`})
-                                })
-                    }
-                  })
-    }
+    return Array(16)
+                .fill()
+                .map((_, idx) => {
+                  return {
+                    active: false,
+                    id: `row-${idx}`,
+                    columns: Array(8)
+                              .fill()
+                              .map((_, jdx) => {
+                                return Object.assign({}, note, { id: `${idx}-${jdx}`})
+                              })
+                  }
+                })
   }
 
   togglePlaying() {
@@ -47,7 +82,6 @@ class App extends Component {
       }, this.state.tempo / 60 * 100)
     } else if (this.timerID) {
       clearInterval(this.timerID)
-      // synth.stop()
     }
 
     this.setState({
@@ -59,6 +93,7 @@ class App extends Component {
     const sequencer = this.state.sequencer.slice()
     sequencer[row].columns[column].active = active
     this.setState({ sequencer })
+    localforage.setItem('lastSequence', sequencer)
   }
 
   incrementActiveRow() {
@@ -73,8 +108,32 @@ class App extends Component {
     playNotes(this.state.sequencer[this.state.activeRow])
   }
 
+  saveSequence() {
+    const storedSequences = this.state.storedSequences.slice(0, this.state.storedSequences.length - 1)
+    storedSequences.unshift({
+      name: 'Stored Sequence',
+      sequence: this.state.sequencer
+    })
+    this.setState({
+      storedSequences
+    })
+    localforage.setItem('storedSequences', storedSequences)
+  }
+
+  loadSequence(idx) {
+    console.log(idx)
+    this.setState({
+      sequencer: this.state.storedSequences[idx].sequence
+    })
+  }
+
   render() {
     const playText = this.state.playing ? 'Pause' : 'Play'
+    const storedSequences = this.state.storedSequences.map((sequence, idx) => {
+      return (
+        <option value={idx} key={sequence.name + idx}>{sequence.name}</option>
+      )
+    })
 
     return (
       <div className="App">
@@ -84,6 +143,10 @@ class App extends Component {
         />
         <div className="SynthControls">
           <button className='playToggle' onClick={() => this.togglePlaying() }>{playText}</button>
+          <button onClick={() => this.saveSequence()}>Save</button>
+          <select className="sequenceSelector" onChange={(e) => this.loadSequence(e.target.value)}>
+            {storedSequences}
+          </select>
         </div>
       </div>
     );
