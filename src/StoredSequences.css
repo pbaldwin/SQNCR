@@ -1,0 +1,75 @@
+.StoredSequences {
+  align-items: center;
+  background-color: hsl(0, 0%, 40%);
+  border: 3px solid hsl(0, 0%, 30%);
+  color: #fff;
+  display: flex;
+  font-size: 1.2rem;
+  height: 4rem;
+  justify-content: space-between;
+  margin-left: 1rem;
+  padding: 0 .5rem;
+  position: relative;
+  text-transform: lowercase;
+}
+
+.StoredSequences__label {
+  margin-right: 1rem;
+}
+
+.StoredSequences__toggle {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #fff;
+}
+
+.StoredSequences__toggle i {
+  transition: transform .25s ease;
+}
+
+.StoredSequences__toggle--active i {
+  transform: rotateZ(45deg);
+}
+
+.SequenceOptionsList {
+  background-color: hsl(0, 0%, 40%);
+  bottom: 100%; left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.SequenceOption {
+  align-items: center;
+  display: flex;
+  font-size: .8rem;
+  padding: .5rem 1rem;
+  transition: background-color .25s ease;
+}
+
+.SequenceOption:hover {
+  background-color: hsl(0, 0%, 50%);
+}
+
+.SequenceOption__label {
+  background: transparent;
+  border: none;
+  color: #fff;
+  flex-grow: 1;
+  text-align: left;
+}
+
+.SequenceOption__button {
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: #fff;
+}
+
+.SequenceOption__button:hover {
+  color: hsl(110, 85%, 65%)
+}
+
+.SequenceOption__button div {
+  font-size: .5rem;
+}

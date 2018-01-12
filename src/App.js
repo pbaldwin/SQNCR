@@ -1,6 +1,9 @@
+import emptySequence from './utils/emptySequence'
 import localforage from 'localforage'
 import React, { Component } from 'react';
+import { Icon } from  'rmwc/Icon'
 import SequencerGrid from './Sequencer'
+import StoredSequences from './StoredSequences'
 import Synth from './Synth'
 import './App.css';
 
@@ -18,11 +21,11 @@ class App extends Component {
       tempo: 120,
       playing: false,
       activeRow: 0,
-      sequencer: this.createEmptySequence(),
+      sequencer: emptySequence(),
       storedSequences: Array(8).fill().map(() => {
         return {
           name: '------------',
-          sequence: this.createEmptySequence(),
+          sequence: emptySequence(),
         }
       })
     }
@@ -42,35 +45,18 @@ class App extends Component {
 
     localforage
       .getItem('storedSequences')
-      .then((storedSequences) => {
-        if (storedSequences) {
+      .then((sequences) => {
+        if (sequences) {
+          const storedSequences = this.state.storedSequences
+                                    .map((sequence, i) => {
+                                      return sequences[i] ? sequences[i] : sequence
+                                    })
           this.setState({
             storedSequences
           })
         }
       })
       .catch(console.log.bind(console))
-  }
-
-  createEmptySequence() {
-    const note = {
-      active: false,
-      id: null,
-    }
-
-    return Array(16)
-                .fill()
-                .map((_, idx) => {
-                  return {
-                    active: false,
-                    id: `row-${idx}`,
-                    columns: Array(8)
-                              .fill()
-                              .map((_, jdx) => {
-                                return Object.assign({}, note, { id: `${idx}-${jdx}`})
-                              })
-                  }
-                })
   }
 
   togglePlaying() {
@@ -108,12 +94,12 @@ class App extends Component {
     playNotes(this.state.sequencer[this.state.activeRow])
   }
 
-  saveSequence() {
-    const storedSequences = this.state.storedSequences.slice(0, this.state.storedSequences.length - 1)
-    storedSequences.unshift({
+  saveSequence(idx) {
+    const storedSequences = this.state.storedSequences.slice()
+    storedSequences[idx] = {
       name: 'Stored Sequence',
       sequence: this.state.sequencer.slice()
-    })
+    }
     this.setState({
       storedSequences
     })
@@ -121,20 +107,12 @@ class App extends Component {
   }
 
   loadSequence(idx) {
-    console.log(idx)
     this.setState({
       sequencer: this.state.storedSequences[idx].sequence.slice()
     })
   }
 
   render() {
-    const playText = this.state.playing ? 'Pause' : 'Play'
-    const storedSequences = this.state.storedSequences.map((sequence, idx) => {
-      return (
-        <option value={idx} key={sequence.name + idx}>{sequence.name}</option>
-      )
-    })
-
     return (
       <div className="App">
         <SequencerGrid
@@ -142,11 +120,14 @@ class App extends Component {
           onRowChange={(row, col, active) => this.handleRowChange(row, col, active)}
         />
         <div className="SynthControls">
-          <button className='playToggle' onClick={() => this.togglePlaying() }>{playText}</button>
-          <button onClick={() => this.saveSequence()}>Save</button>
-          <select className="sequenceSelector" onChange={(e) => this.loadSequence(e.target.value)}>
-            {storedSequences}
-          </select>
+          <button className='playToggle' onClick={() => this.togglePlaying() }>
+            {this.state.playing ? <Icon use="pause" /> : <Icon use="play_arrow" />}
+          </button>
+          <StoredSequences
+            options={this.state.storedSequences}
+            onLoad={(idx) => this.loadSequence(idx)}
+            onSave={(idx) => this.saveSequence(idx)}
+          />
         </div>
       </div>
     );

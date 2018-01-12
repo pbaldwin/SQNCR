@@ -14,11 +14,13 @@
   justify-content: space-around;
   align-items: stretch;
   flex-grow: 1;
+  transition: background-color 1s ease-out;
 }
 
 .SequencerRow--active {
   background-color: hsl(170, 65%, 55%);
   box-shadow: 0 0 .5rem .5rem hsl(170, 65%, 65%);
+  transition: background-color 0s ease-out;
 }
 
 .SequencerColumn {
