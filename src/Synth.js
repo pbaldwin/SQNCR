@@ -20,7 +20,22 @@ class Synth {
     this.masterVolume.connect(this.ctx.destination)
 
     this.scale = this.newScale(scale)
+
+    // Some requires us to start the oscillators
+    // as a result of a user action...
+    const initializeSynth = () => {
+      this.soundNodes.forEach((node) => {
+        node.oscillator.start()
+      })
+      document.removeEventListener('mousedown', initializeSynth)
+      document.removeEventListener('touchstart', initializeSynth)
+    }
+
+    document.addEventListener('mousedown', initializeSynth)
+    document.addEventListener('touchstart', initializeSynth)
   }
+
+
 
   newScale(scale) {
     this.soundNodes = scale.map((note) => {
@@ -33,7 +48,6 @@ class Synth {
       gainNode.gain.value = 0
       oscillator.type = 'sawtooth'
       oscillator.frequency.value = note
-      oscillator.start()
 
       return {
         gainNode,
